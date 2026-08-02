@@ -22,11 +22,14 @@
 	var DEFAULT_SKIN_ID = "default";       // this skin means "show native FPP" — see applySkin()
 
 	var SKINS = [
+		/* id stays "default" (matches wl-skin-default.css + existing saved
+		   localStorage values) — only the display name changed, and this
+		   entry moved to the front so it's the first option in the picker. */
+		{ id: "default",  name: "Original FPP", desc: "Original FPP look",     mode: "light", swatch: "linear-gradient(135deg,#f5f5f5,#171720)" },
 		{ id: "midnight", name: "Midnight", desc: "Modern dark dashboard", mode: "dark",  swatch: "linear-gradient(135deg,#38bdf8,#6366f1)" },
 		{ id: "festive",  name: "Festive",  desc: "Bright winter gradient", mode: "light", swatch: "linear-gradient(135deg,#adc4f0,#f5c1e7)" },
 		{ id: "minimal",  name: "Minimal",  desc: "Clean & neutral",       mode: "light", swatch: "linear-gradient(135deg,#e6ebf1,#3b6ea8)" },
-		{ id: "frost",    name: "Frost",    desc: "Frosted glass",          mode: "dark",  swatch: "linear-gradient(135deg,#7fd8ff,#c9a9ff)" },
-		{ id: "default",  name: "Default",  desc: "Original FPP look",     mode: "light", swatch: "linear-gradient(135deg,#f5f5f5,#171720)" }
+		{ id: "frost",    name: "Frost",    desc: "Frosted glass",          mode: "dark",  swatch: "linear-gradient(135deg,#7fd8ff,#c9a9ff)" }
 	];
 	// SKINS above is a fallback list — always available immediately, even if
 	// discovery (below) fails or hasn't finished yet. Any wl-skin-<id>.css
@@ -225,8 +228,8 @@
 		panel.hidden = true;
 		panel.innerHTML = '<h4>Theme Skin</h4>' +
 			'<div id="wlSkinOptions"></div>' +
-			'<div class="wl-foot">WinterLights.in &middot; ' +
-			'<a href="https://www.WinterLights.in" target="_blank">winterlights.in</a></div>';
+			'<div class="wl-foot">' +
+			'<a href="https://www.WinterLights.in" target="_blank">WinterLights.in</a></div>';
 
 		wrap.appendChild(panel);
 		wrap.appendChild(toggle);

@@ -49,3 +49,14 @@
 fieldset, .fppTable, .card {
 	border-top: 3px dotted var(--wl-accent-2) !important;
 }
+/* wl-picker.css's default wordmark gradient (--wl-accent -> --wl-accent-2)
+   is unreadable here: --wl-accent-2 (#6b3f1d) is the exact same color as
+   --wl-header-bg's own gradient stop, so the wordmark blends invisibly
+   into the header at that end. Override with colors verified against the
+   header instead — cream (matches --wl-header-text) to pale gold, both
+   independently clearing 4.5:1 against both header gradient stops. */
+.wl-brand .wl-wordmark {
+	background: linear-gradient(90deg, #fff3e0, #f6dba0);
+	-webkit-background-clip: text;
+	background-clip: text;
+}
