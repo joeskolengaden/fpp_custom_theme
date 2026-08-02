@@ -285,6 +285,20 @@ fieldset,
 	border-radius: var(--wl-radius) !important;
 }
 fieldset { padding: 14px 18px !important; }
+/* Third-party plugin pages that ship their own complete, self-contained
+   design (not meant to be re-themed) can still get caught by the broad
+   .card/etc. rule above if they happen to reuse a generic class name.
+   Confirmed case: the FPP OLED Custom Logo plugin's own #ol .card{
+   background:#fff} + hardcoded dark text (#1f2733/#374151/#6b7280, no
+   theme awareness) — our forced dark surface background left its own
+   text unreadable against it. #ol .card is more specific than plain
+   .card, so this wins over the blanket rule above despite both being
+   !important, and restores exactly the plugin's own intended look. */
+#ol .card {
+	background: #fff !important;
+	color: #1f2733 !important;
+	border-color: #e4e7ec !important;
+}
 legend {
 	color: var(--wl-accent) !important;
 	font-family: var(--wl-font-brand);
