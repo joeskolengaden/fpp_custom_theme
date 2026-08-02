@@ -148,6 +148,20 @@ pre, code, textarea, .console {
 .header, .header * {
 	color: var(--wl-header-text) !important;
 }
+/* FPP core's own logo images (images/redesign/falconlogo.svg,
+   images/redesign/fpp-logo.svg) have their fill hardcoded to white
+   (fill="#fff") INSIDE the SVG file itself. They're loaded via
+   <img src="...svg">, not inlined into the page, so no CSS color /
+   currentColor rule (including the broad one above) can ever reach in
+   and recolor them — the browser treats a src-referenced SVG as an
+   opaque image. On dark-header skins a white logo is already correct;
+   on light-header skins (data-bs-theme="light", set by custom.js from
+   each skin's own `mode`) it's invisible against the light background.
+   Invert it to black there instead. */
+html[data-bs-theme="light"] .header .logo,
+html[data-bs-theme="light"] .header .fpp-logo {
+	filter: invert(1);
+}
 /* The WinterLights brand block (.wl-brand) injected into the header, and
    the floating skin picker, are styled in wl-picker.css — a separate file
    that stays loaded even when this file is disabled (Default skin), so
