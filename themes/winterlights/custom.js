@@ -35,6 +35,8 @@
 	// discovery (below) fails or hasn't finished yet. Any wl-skin-<id>.css
 	// uploaded through the plugin's own upload form is picked up on the next
 	// page load with no further edits needed here.
+	var HARDCODED_IDS = SKINS.map(function (s) { return s.id; });
+	var DISCOVERED_CACHE_KEY = "wlDiscoveredSkins";
 
 	function skinById(id) {
 		for (var i = 0; i < SKINS.length; i++) if (SKINS[i].id === id) return SKINS[i];
@@ -46,6 +48,32 @@
 	}
 	function humanize(id) {
 		return id.replace(/[-_]+/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+	}
+	// Cache of auto-discovered skins' metadata (everything not in the
+	// hardcoded SKINS list above) in localStorage, so a skin already seen
+	// once is available IMMEDIATELY on the next page load — no network
+	// round-trip required. Without this, applySkin(getSaved()) at the top
+	// of init() can only ever find a discovered skin (e.g. Noir,
+	// Gingerbread) after discoverSkins()'s fetch() completes; if that
+	// fetch is slow or fails — plausible right after a device reboot,
+	// while FPP's own API is still warming up — the page renders Midnight
+	// for that load. The saved choice itself was never actually lost
+	// (applySkin only persists on an explicit user click), but it LOOKS
+	// reverted, which is indistinguishable from a real bug to the user.
+	function loadDiscoveredCache() {
+		try {
+			var cached = JSON.parse(localStorage.getItem(DISCOVERED_CACHE_KEY) || "[]");
+			if (!Array.isArray(cached)) return;
+			for (var i = 0; i < cached.length; i++) {
+				if (cached[i] && cached[i].id && !skinByIdStrict(cached[i].id)) SKINS.push(cached[i]);
+			}
+		} catch (e) {}
+	}
+	function saveDiscoveredCache() {
+		try {
+			var discovered = SKINS.filter(function (s) { return HARDCODED_IDS.indexOf(s.id) === -1; });
+			localStorage.setItem(DISCOVERED_CACHE_KEY, JSON.stringify(discovered));
+		} catch (e) {}
 	}
 	// FPP's real API (see api/endpoints.json): GET /api/configfile lists
 	// every file in /home/fpp/media/config as { ConfigFiles: [...] }.
@@ -66,7 +94,9 @@
 						.then(function (r) { return r.ok ? r.text() : ""; })
 						.then(function (css) { SKINS.push(parseSkinMeta(id, css)); })
 						.catch(function () {})
-						.then(function () { if (--pending === 0) done(); });
+						.then(function () {
+							if (--pending === 0) { saveDiscoveredCache(); done(); }
+						});
 				});
 			})
 			.catch(function () { done(); });
@@ -261,7 +291,8 @@
 	// --- boot ----------------------------------------------------------
 	function init() {
 		ensurePickerCss();       // load before applySkin() so the brand/picker are styled immediately
-		applySkin(getSaved());   // sets the link + data-bs-theme ASAP, from the fallback list
+		loadDiscoveredCache();   // restore any previously-discovered skins BEFORE the first applySkin call below, so one doesn't need a fresh network fetch to be found
+		applySkin(getSaved());   // sets the link + data-bs-theme ASAP, from the fallback list (now including cached discoveries)
 		injectBrand();
 		applyBranding();
 		discoverSkins(function () {
