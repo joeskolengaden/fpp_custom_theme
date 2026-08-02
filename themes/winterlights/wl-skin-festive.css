@@ -45,5 +45,15 @@
 /* candy-cane underline on the header */
 .header { border-bottom: 4px solid transparent !important;
 	border-image: repeating-linear-gradient(45deg, #d43765 0 12px, #ffffff 12px 24px) 4 !important; }
-table.fppTable th, thead th { color: #fff !important;
-	background: linear-gradient(120deg, var(--wl-accent), var(--wl-accent-2)) !important; }
+/* One continuous gradient across the whole header row, not a separate
+   gradient restarting inside every <th>. Painting the gradient directly
+   on each cell (the old rule) makes it look segmented/striped at every
+   column boundary instead of one smooth sweep — paint it on the row
+   instead and let the (now transparent) cells show it through. */
+table.fppTable thead tr, thead tr {
+	background: linear-gradient(120deg, var(--wl-accent), var(--wl-accent-2)) !important;
+}
+table.fppTable th, thead th {
+	background: transparent !important;
+	color: #fff !important;
+}
