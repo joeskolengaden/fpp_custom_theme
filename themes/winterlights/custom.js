@@ -117,7 +117,14 @@
 	}
 
 	// --- apply a skin --------------------------------------------------
-	function applySkin(id) {
+	// `persist` must be true ONLY for an explicit user choice (clicking a
+	// picker option). Every restore-on-page-load call leaves it false —
+	// otherwise, a skin not yet in SKINS (discovered ones, before
+	// discoverSkins() finishes) falls back to SKINS[0] and saving THAT
+	// clobbers the real saved choice in localStorage before discovery
+	// ever gets a chance to restore it, permanently reverting to Midnight
+	// on the very next page load.
+	function applySkin(id, persist) {
 		var skin = skinById(id);
 		var link = document.getElementById("wl-active-skin");
 		if (!link) {
@@ -146,7 +153,7 @@
 		for (var i = 0; i < opts.length; i++) {
 			opts[i].setAttribute("aria-checked", opts[i].getAttribute("data-skin") === skin.id ? "true" : "false");
 		}
-		save(skin.id);
+		if (persist) save(skin.id);
 	}
 
 	// --- brand block in the header ------------------------------------
@@ -238,7 +245,7 @@
 		});
 		panel.addEventListener("click", function (e) {
 			var btn = e.target.closest ? e.target.closest(".wl-skin-option") : null;
-			if (btn) { applySkin(btn.getAttribute("data-skin")); }
+			if (btn) { applySkin(btn.getAttribute("data-skin"), true); }
 			e.stopPropagation();
 		});
 		document.addEventListener("click", function () { if (!panel.hidden) closePanel(); });
