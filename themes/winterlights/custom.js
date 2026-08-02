@@ -171,7 +171,8 @@
 		brand.innerHTML =
 			'<img src="' + LOGO + '" alt="WinterLights" ' +
 			'onerror="this.style.display=\'none\'">' +
-			'<span class="wl-wordmark">WinterLights.in</span>';
+			'<a class="wl-wordmark" href="https://www.WinterLights.in" ' +
+			'target="_blank" rel="noopener">WinterLights.in</a>';
 		if (getComputedStyle(header).position === "static") header.style.position = "relative";
 		header.insertBefore(brand, header.firstChild);
 	}

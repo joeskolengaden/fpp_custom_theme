@@ -31,6 +31,12 @@
 	filter: drop-shadow(0 2px 6px rgba(0,0,0,.4));
 }
 .wl-brand .wl-wordmark {
+	/* .wl-brand itself is pointer-events:none (so the logo/decorative
+	   parts never intercept clicks on FPP's own header controls) — the
+	   wordmark is now a real link, so it opts back in here. */
+	pointer-events: auto;
+	cursor: pointer;
+	text-decoration: none;
 	font-family: var(--wl-font-brand);
 	font-weight: 600;
 	font-style: italic;
