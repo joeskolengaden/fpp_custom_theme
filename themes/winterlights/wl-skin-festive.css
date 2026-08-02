@@ -1,0 +1,49 @@
+/* WinterLights skin :: FESTIVE — bright, the winter blue->pink gradient as hero */
+:root {
+	--wl-font:          'Inter', system-ui, sans-serif;
+	--wl-font-brand:    'Oswald', sans-serif;
+
+	--wl-bg:            #f4f7fb;
+	--wl-bg-image:      linear-gradient(180deg, rgba(173,196,240,.35), rgba(245,193,231,.30));
+	--wl-bg-attach:     fixed;
+
+	--wl-surface:       #ffffff;
+	--wl-surface-2:     #eef3fb;
+	--wl-surface-blur:  none;
+
+	--wl-border:        rgba(60,80,120,.16);
+	--wl-radius:        16px;
+	--wl-radius-sm:     10px;
+
+	--wl-text:          #21314a;
+	--wl-text-muted:    #5b6b85;
+	--wl-link:          #2563c9;
+
+	--wl-accent:        #d43765;     /* candy pink-red */
+	--wl-accent-2:      #2e7d5b;     /* holly green */
+	--wl-accent-text:   #ffffff;
+
+	/* the actual wlbg.png gradient as the header hero */
+	--wl-header-bg:     url('wlbg.png') center/cover, linear-gradient(120deg, #adc4f0, #f5c1e7);
+	--wl-header-text:   #1b2740;
+	--wl-header-h:      92px;
+
+	--wl-menu-bg:       #ffffff;
+	--wl-menu-text:     #2a3a57;
+	--wl-menu-hover-bg: rgba(212,55,101,.12);
+	--wl-menu-hover-text: #c01e4e;
+	--wl-dropdown-bg:   #ffffff;
+
+	--wl-shadow:        0 14px 38px rgba(80,100,150,.22);
+	--wl-shadow-sm:     0 3px 12px rgba(80,100,150,.16);
+}
+/* festive runs in light mode; soften the brand wordmark for the light header */
+.wl-brand .wl-wordmark {
+	background: linear-gradient(90deg, #2563c9, #d43765, #2e7d5b);
+	-webkit-background-clip: text; background-clip: text;
+}
+/* candy-cane underline on the header */
+.header { border-bottom: 4px solid transparent !important;
+	border-image: repeating-linear-gradient(45deg, #d43765 0 12px, #ffffff 12px 24px) 4 !important; }
+table.fppTable th, thead th { color: #fff !important;
+	background: linear-gradient(120deg, var(--wl-accent), var(--wl-accent-2)) !important; }

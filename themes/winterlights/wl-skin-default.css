@@ -1,0 +1,65 @@
+/* WinterLights skin :: DEFAULT — approximates FPP's original, un-themed look.
+   Colors below are pulled from FPP core's own fpp.css / fpp-bootstrap.css
+   (body #171720, header #171720/#fff text, .pageContent #fff/#000,
+   .fppSelectableRowTable row #F5F5F5, native link #495057, native
+   .btn-primary #171720/#fff) rather than guessed.
+
+   NOT pixel-perfect: native FPP hardcodes different text colors per region
+   (dark chrome vs. white card) using separate CSS rules; our shared theme
+   engine binds most text to a single --wl-text variable. Rather than making
+   --wl-bg dark (which would make --wl-text dark-on-dark everywhere content
+   lives outside the header/nav/footer — including h1.title, sitting on the
+   dark chrome), this skin keeps the page body/surfaces light so --wl-text
+   stays legible everywhere, and reserves FPP's real dark chrome color for
+   just the header/nav/footer via their own independent variables. */
+:root {
+	--wl-font:          'Helvetica', 'Arial', sans-serif;
+	--wl-font-brand:    'Helvetica', 'Arial', sans-serif;
+
+	--wl-bg:            #ffffff;
+	--wl-bg-image:      none;
+	--wl-bg-attach:     scroll;
+
+	--wl-surface:       #ffffff;
+	--wl-surface-2:     #f5f5f5;     /* matches native .fppSelectableRowTable row bg exactly */
+	--wl-surface-blur:  none;
+
+	--wl-border:        rgba(0,0,0,.14);
+	--wl-radius:        6px;         /* native FPP/Bootstrap uses small radii, not our other skins' rounded look */
+	--wl-radius-sm:     4px;
+
+	--wl-text:          #000000;     /* matches native .pageContent color:#000 */
+	--wl-text-muted:    #6c757d;     /* Bootstrap's native muted gray */
+	--wl-link:          #495057;     /* matches native a{color:#495057} */
+
+	--wl-accent:        #171720;     /* matches native .btn-primary background-color */
+	--wl-accent-2:      #171720;     /* same as accent — native buttons are flat, not gradient */
+	--wl-accent-text:   #ffffff;
+
+	--wl-header-bg:     #171720;     /* matches native .header background-color */
+	--wl-header-text:   #ffffff;
+	--wl-header-h:      64px;
+
+	--wl-menu-bg:       #171720;
+	--wl-menu-text:     #b8b8b8;     /* matches native #fppMenu a{color:#B8B8B8} */
+	--wl-menu-hover-bg: rgba(255,255,255,.08);
+	--wl-menu-hover-text: #ffffff;
+	/* Native dropdown-menu is actually white with dark text (#363636), but
+	   custom.css's .dropdown-item shares --wl-menu-text with the navbar
+	   link color (light, for the dark navbar) — a white dropdown would make
+	   dropdown-item text illegible. Kept dark like --wl-menu-bg instead of
+	   risking a shared-selector change that could regress the other 4
+	   skins; not pixel-native, but internally consistent and accessible. */
+	--wl-dropdown-bg:   #21222c;
+
+	--wl-shadow:        0 8px 24px rgba(0,0,0,.15);
+	--wl-shadow-sm:      0 2px 6px rgba(0,0,0,.10);
+}
+/* Flat, un-animated wordmark — a "default" identity shouldn't carry the
+   other skins' decorative gradient/glow flourishes. Uses --wl-header-text
+   (white), not --wl-text (black) — the wordmark sits in the dark header. */
+.wl-brand .wl-wordmark {
+	animation: none !important;
+	background: none !important; -webkit-text-fill-color: var(--wl-header-text) !important;
+	color: var(--wl-header-text) !important; font-style: normal; font-weight: 600;
+}

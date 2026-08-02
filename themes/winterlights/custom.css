@@ -1,0 +1,416 @@
+/* =====================================================================
+   WinterLights.in — FPP Custom Theme  ::  SHARED SKELETON (custom.css)
+   ---------------------------------------------------------------------
+   This file is auto-loaded by FPP on every page (config/custom.css).
+   It contains NO colors of its own — every visual property reads a
+   --wl-* CSS variable. The active skin (wl-skin-*.css, injected by
+   custom.js) supplies those variables, so switching skins re-themes
+   the whole UI without touching this file.
+
+   Targets FPP 5.4 -> 9.x. Built on the selectors that are stable across
+   that whole range: #bodyWrapper, .header, #fppMenu.navbar,
+   .nav-item.dropdown, .dropdown-item, .buttons, #footer. On 9.x it also
+   bridges into Bootstrap 5.3's --bs-* variables and html[data-bs-theme].
+
+   The "Default" skin is FPP's own native look: custom.js disables THIS
+   FILE's <link> entirely when Default is selected (found via its
+   FPP-hardcoded href, api/configfile/custom.css — see menuHead.inc), so
+   none of the rules below run and native FPP CSS governs the page
+   unmodified. The brand block + skin picker are deliberately NOT in this
+   file — they live in the always-on wl-picker.css — so they keep working
+   (letting you switch back to a themed skin) even while this file is off.
+   ===================================================================== */
+
+@import url("https://use.fontawesome.com/releases/v5.15.4/css/all.css");
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ---------------------------------------------------------------------
+   Variable defaults. Skins override these on :root (loaded AFTER this
+   file, so they win). Kept here so the UI is still sane if a skin file
+   fails to load.
+   --------------------------------------------------------------------- */
+:root {
+	--wl-font:          'Inter', 'Oswald', system-ui, sans-serif;
+	--wl-font-brand:    'Oswald', 'Inter', sans-serif;
+
+	--wl-bg:            #161d20;
+	--wl-bg-image:      none;
+	--wl-bg-attach:     scroll;
+
+	--wl-surface:       #1f292d;
+	--wl-surface-2:     #263238;
+	--wl-surface-blur:  none;          /* backdrop-filter value, frost skin uses blur() */
+	--wl-surface-alpha: 1;
+
+	--wl-border:        rgba(255,255,255,.10);
+	--wl-radius:        12px;
+	--wl-radius-sm:     8px;
+
+	--wl-text:          #e6edf2;
+	--wl-text-muted:    #9fb0ba;
+	--wl-link:          #58c4ff;
+
+	--wl-accent:        #38bdf8;
+	--wl-accent-2:      #6366f1;
+	--wl-accent-text:   #06121a;
+
+	--wl-header-bg:     linear-gradient(120deg, #16222b, #1f3a4d);
+	--wl-header-text:   #eaf6ff;
+	--wl-header-h:      72px;
+
+	--wl-menu-bg:       #131a1d;
+	--wl-menu-text:     #cfdbe2;
+	--wl-menu-hover-bg: rgba(56,189,248,.16);
+	--wl-menu-hover-text: #ffffff;
+	--wl-dropdown-bg:   #1b242a;
+
+	--wl-shadow:        0 8px 28px rgba(0,0,0,.35);
+	--wl-shadow-sm:     0 2px 8px rgba(0,0,0,.25);
+
+	/* picker accent swatches are set per-skin in JS, not here */
+}
+
+/* =====================================================================
+   1. PAGE SHELL
+   ===================================================================== */
+html, body {
+	background: var(--wl-bg) !important;
+}
+html {
+	background-image: var(--wl-bg-image) !important;
+	background-size: cover !important;
+	background-attachment: var(--wl-bg-attach) !important;
+	background-position: center !important;
+	background-repeat: no-repeat !important;
+}
+body {
+	font-family: var(--wl-font) !important;
+	color: var(--wl-text);
+}
+#bodyWrapper {
+	background: transparent !important;
+}
+/* Bridge into Bootstrap 5.3 tokens so native components (inputs,
+   dropdowns, modals, tables) inherit the skin on FPP 9.x. Harmless
+   no-op on older FPP that lacks --bs-* vars. */
+html, html[data-bs-theme] {
+	--bs-body-bg:       var(--wl-bg);
+	--bs-body-color:    var(--wl-text);
+	--bs-border-color:  var(--wl-border);
+	--bs-secondary-bg:  var(--wl-surface-2);
+	--bs-tertiary-bg:   var(--wl-surface);
+	--bs-emphasis-color: var(--wl-text);
+	--bs-link-color:    var(--wl-link);
+	--bs-link-hover-color: var(--wl-accent);
+	--bs-primary:       var(--wl-accent);
+}
+
+a, .nonULLink { color: var(--wl-link); }
+a:hover { color: var(--wl-accent); }
+
+pre, code, textarea, .console {
+	color: var(--wl-text) !important;
+	background: linear-gradient(var(--wl-surface-2), var(--wl-surface-2)), var(--wl-bg) !important;
+	border-color: var(--wl-border) !important;
+}
+
+/* =====================================================================
+   2. HEADER  (.header is stable 5.4 -> master; brand internals are not,
+   so our own branding is injected by custom.js as .wl-brand)
+   ===================================================================== */
+.header {
+	background: var(--wl-header-bg) !important;
+	color: var(--wl-header-text) !important;
+	min-height: var(--wl-header-h);
+	border-bottom: 1px solid var(--wl-border) !important;
+	box-shadow: var(--wl-shadow-sm);
+	/* NOTE: no overflow:hidden — it would clip header controls/dropdowns.
+	   NOTE: no position:relative here either — native FPP makes .header
+	   position:fixed at desktop widths and compensates with
+	   #bodyWrapper{margin-top:64px}. Overriding to relative pulled the
+	   header out of that fixed layer but left the 64px margin in place,
+	   opening a blank gap above the header showing raw page background.
+	   custom.js's injectBrand() already sets position:relative inline,
+	   but ONLY if the header's computed position is static — so it won't
+	   fight native's fixed positioning at desktop widths, only fill in a
+	   positioning context where native genuinely leaves one (or lacks one). */
+}
+.header a, .header .headerHostName, .header .headerName,
+.header #header_host, .header .versionHead {
+	color: var(--wl-header-text) !important;
+}
+/* The WinterLights brand block (.wl-brand) injected into the header, and
+   the floating skin picker, are styled in wl-picker.css — a separate file
+   that stays loaded even when this file is disabled (Default skin), so
+   the brand/picker keep working while everything else in this file goes
+   quiet and lets native FPP render through untouched. */
+
+/* =====================================================================
+   3. NAVBAR / MENU  (#fppMenu is a Bootstrap navbar across 5.4 -> master)
+   ===================================================================== */
+#fppMenu, #fppMenu.navbar {
+	background: var(--wl-menu-bg) !important;
+	border-bottom: 1px solid var(--wl-border);
+	box-shadow: var(--wl-shadow-sm);
+}
+#fppMenu .nav-link,
+#fppMenu .navbar-nav > .nav-item > .nav-link {
+	color: var(--wl-menu-text) !important;
+	font-family: var(--wl-font);
+	font-weight: 500;
+	border-radius: var(--wl-radius-sm);
+	transition: background-color .15s ease, color .15s ease;
+}
+#fppMenu .nav-link:hover,
+#fppMenu .nav-link:focus,
+#fppMenu .nav-item.show > .nav-link {
+	background: var(--wl-menu-hover-bg) !important;
+	color: var(--wl-menu-hover-text) !important;
+}
+/* Dropdown panels */
+#fppMenu .dropdown-menu,
+.dropdown-menu {
+	background: var(--wl-dropdown-bg) !important;
+	border: 1px solid var(--wl-border) !important;
+	border-radius: var(--wl-radius-sm) !important;
+	box-shadow: var(--wl-shadow) !important;
+	padding: 6px !important;
+}
+.dropdown-menu .dropdown-item {
+	color: var(--wl-menu-text) !important;
+	border-radius: var(--wl-radius-sm) !important;
+	padding: 7px 14px !important;
+	transition: background-color .12s ease, color .12s ease;
+}
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item.active {
+	background: var(--wl-menu-hover-bg) !important;
+	color: var(--wl-menu-hover-text) !important;
+}
+.dropdown-menu .dropdown-item i,
+.dropdown-menu .dropdown-item .fas,
+.dropdown-menu .dropdown-item .far {
+	color: var(--wl-accent);
+	width: 1.2em;
+	text-align: center;
+}
+.dropdown-divider { border-color: var(--wl-border) !important; }
+
+/* =====================================================================
+   4. CONTENT SURFACES  (cards, tables, fieldsets, tabs, alerts)
+   ===================================================================== */
+.container, .container-fluid { color: var(--wl-text); }
+
+/* FPP core hardcodes .pageContent to background:#fff / color:#000, plus a
+   box-shadow trick that fakes a dark backdrop (#20222E) bleeding past the
+   card edges. That's every plugin page (including this theme's own config
+   page) — on light skins the hardcoded dark backdrop clashes, and on dark
+   skins a permanently-white card breaks the theme entirely. Skin it like
+   every other surface and drop the now-unneeded backdrop hack (the real
+   page background already comes from --wl-bg). */
+.pageContent {
+	background: linear-gradient(var(--wl-surface), var(--wl-surface)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+	box-shadow: none !important;
+}
+
+/* Same hardcoded-white-card pattern as .pageContent, on FPP core's modal
+   dialogs (confirmations, help popups) and list-group items (used by
+   various picker UIs). Both appear across many pages, not just the ones
+   already screenshotted — fixing proactively before it's the next bug
+   found by trial and error. */
+.modal-content, .list-group-item {
+	background: linear-gradient(var(--wl-surface), var(--wl-surface)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+	border-color: var(--wl-border) !important;
+}
+.modal-header, .modal-footer {
+	border-color: var(--wl-border) !important;
+}
+
+/* FPP core hardcodes .title (the h1.title plugin/page heading) to a fixed
+   white (fpp.css: .title{color:#fff}), which reads fine on our dark skins
+   only by coincidence and goes invisible on light skins (Festive, Minimal). */
+.title, .mainContainer .title, h1.title { color: var(--wl-text) !important; }
+
+/* Individual plugins (including this theme's own config page) often
+   hardcode their own heading/label colors, tuned only against FPP core's
+   fixed white .pageContent. Once .pageContent follows the skin above,
+   those hardcoded colors can end up low-contrast on some skins — so pull
+   any un-classed heading/paragraph text inside plugin content back to the
+   theme's text color as a safety net. Buttons, links, and anything we
+   deliberately accent elsewhere keep their own more-specific rules. */
+.pageContent h1, .pageContent h2, .pageContent h3,
+.pageContent h4, .pageContent h5, .pageContent h6,
+.pageContent p { color: var(--wl-text) !important; }
+
+/* .fppTable/.printControlTable are literal <table> elements in several FPP
+   pages, and backdrop-filter is unreliable on table-layout elements (see
+   the table-header note above) — so this whole group gets the same
+   guaranteed-opaque backstop rather than depending on blur. */
+fieldset,
+.fppTable, .printControlTable, .tableScrollWrapper,
+.fppTableWrapper, .fppTableWrapperAsTable, .fppSelectableRowTable,
+.callout, .card, .well, .settingsTable,
+.tab-content, .tab-pane,
+#programControl, #scheduleEditor, #playlistEditor,
+.statusContainer, .systemStats {
+	background: linear-gradient(var(--wl-surface), var(--wl-surface)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+	border: 1px solid var(--wl-border) !important;
+	border-radius: var(--wl-radius) !important;
+}
+fieldset { padding: 14px 18px !important; }
+legend {
+	color: var(--wl-accent) !important;
+	font-family: var(--wl-font-brand);
+	font-weight: 600;
+	width: auto;
+	padding: 0 8px;
+	border: 0;
+}
+/* Tables. backdrop-filter is a known weak spot on <th>/table cells across
+   browsers — they often don't get their own compositing layer the way a
+   <div> does, so it silently fails to blur. Frost's --wl-surface-2 is a
+   translucent WHITE tint meant to sit over a dark backdrop; without a
+   working blur it's exposed directly to whatever's in the page's photo
+   background at that spot, and near-white text over a bright patch of
+   that photo reads as invisible. Skip backdrop-filter entirely here and
+   instead layer the tint over a guaranteed-opaque var(--wl-bg) using
+   multiple backgrounds — deterministic contrast, no reliance on the
+   live photo or on backdrop-filter support. No visual change on the
+   other 3 skins, whose --wl-surface-2 is already fully opaque. */
+table.fppTable th, .tableHeader, thead th, .printControlTable th {
+	background: linear-gradient(var(--wl-surface-2), var(--wl-surface-2)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+	border-color: var(--wl-border) !important;
+}
+table.fppTable td, .printControlTable td, td, th {
+	border-color: var(--wl-border) !important;
+}
+tr:nth-child(even) > td { background: rgba(127,127,127,.05); }
+
+/* FPP core hardcodes .fppSelectableRowTable's row cells (GPIO Input
+   Triggers, Channel Outputs' WL48/BBB48String table, etc.) to a fixed
+   light-gray background, completely outside any theme variable. Text
+   color already follows var(--wl-text) by inheritance, so this reads
+   fine on light skins (dark text on light gray) and goes washed out to
+   invisible on dark skins (light text on that same light gray). */
+.fppSelectableRowTable > tbody > tr > td {
+	background: linear-gradient(var(--wl-surface), var(--wl-surface)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+}
+.fppSelectableRowTable > tbody > tr.selectedEntry > td,
+.fppSelectableRowTable > tbody > tr.fppTableSelectedEntry > td {
+	background: linear-gradient(var(--wl-menu-hover-bg), var(--wl-menu-hover-bg)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+}
+
+/* FPP core's compiled fpp-bootstrap.css hardcodes these "chip" backgrounds
+   (.backdrop-dark:#ECECEC, .backdrop:#F5F5F5) used for the Enable/Cape-type
+   row on Channel Outputs and similar option bars. They're never themed, so
+   once surrounding text follows the skin (var(--wl-text)) via .pageContent,
+   light-on-light is fine on light skins but light-text-on-light-chip goes
+   washed out on dark skins (Midnight, Frost). Skin the chip itself instead. */
+.backdrop, .backdrop-dark {
+	background: linear-gradient(var(--wl-surface-2), var(--wl-surface-2)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+	border: 1px solid var(--wl-border) !important;
+}
+
+/* Tabs (Bootstrap nav-tabs + jQuery UI tabs both appear in FPP) */
+.nav-tabs, .ui-tabs-nav { border-bottom: 1px solid var(--wl-border) !important; }
+.nav-tabs .nav-link {
+	color: var(--wl-text-muted) !important;
+	border: 1px solid transparent !important;
+	border-radius: var(--wl-radius-sm) var(--wl-radius-sm) 0 0 !important;
+}
+.nav-tabs .nav-link.active, .ui-tabs-nav .ui-tabs-active a {
+	background: linear-gradient(var(--wl-surface), var(--wl-surface)), var(--wl-bg) !important;
+	color: var(--wl-accent) !important;
+	border-color: var(--wl-border) var(--wl-border) var(--wl-surface) !important;
+}
+
+/* Bootstrap's compiled .nav-pills .nav-link sets no color at all for the
+   inactive state (only the active pill gets a hardcoded #F63939 bg + white
+   text, which is already safely contrasted on every skin and left alone).
+   Pin the inactive tabs explicitly instead of leaving them to whatever
+   cascades in — that's how "E1.31/ArtNet/DDP/KiNet" and "Other" on Channel
+   Outputs ended up unreadable on dark skins. */
+.nav-pills .nav-link:not(.active) {
+	color: var(--wl-text-muted) !important;
+}
+.nav-pills .nav-link:not(.active):hover,
+.nav-pills .nav-link:not(.active):focus {
+	color: var(--wl-text) !important;
+}
+
+/* Alerts / callouts keep semantic hue but match surface */
+.alert { border-radius: var(--wl-radius) !important; border-color: var(--wl-border) !important; }
+
+/* =====================================================================
+   5. BUTTONS & FORM CONTROLS
+   ===================================================================== */
+.buttons, .btn, button.btn, input[type=button], input[type=submit] {
+	font-family: var(--wl-font) !important;
+	border-radius: var(--wl-radius-sm) !important;
+	border: 1px solid var(--wl-border) !important;
+	transition: transform .08s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.buttons, .btn-primary, .btn-success,
+input[type=submit], button#btnDaemonControl {
+	background: linear-gradient(180deg, var(--wl-accent), var(--wl-accent-2)) !important;
+	color: var(--wl-accent-text) !important;
+	border: 0 !important;
+	box-shadow: var(--wl-shadow-sm);
+	font-weight: 600 !important;
+	text-shadow: none !important;
+}
+.buttons:hover, .btn:hover {
+	transform: translateY(-1px);
+	box-shadow: var(--wl-shadow);
+	filter: brightness(1.05);
+}
+.buttons:active, .btn:active { transform: translateY(0); filter: brightness(.96); }
+/* Disabled controls must LOOK disabled — never paint them with the active
+   gradient, and keep FPP's not-allowed affordance. (FPP/Bootstrap already
+   block the click; this only keeps the appearance honest.) */
+.buttons[disabled], .buttons:disabled,
+.btn[disabled], .btn:disabled, .btn.disabled,
+input[type=button][disabled], input[type=submit][disabled], input[type=reset][disabled] {
+	background: var(--wl-surface-2) !important;
+	color: var(--wl-text-muted) !important;
+	filter: none !important;
+	box-shadow: none !important;
+	transform: none !important;
+	opacity: .55 !important;
+	cursor: not-allowed !important;
+}
+
+/* Only text-like fields get recolored. Checkboxes, radios, ranges, color
+   and file pickers, and the button-type inputs are deliberately excluded
+   so their native appearance + checked/disabled state stay legible. */
+input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]):not([type=reset]):not([type=image]),
+textarea, select, .form-control, .form-select {
+	background: var(--wl-surface-2) !important;
+	color: var(--wl-text) !important;
+	border: 1px solid var(--wl-border) !important;
+	border-radius: var(--wl-radius-sm) !important;
+}
+input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]):not([type=reset]):not([type=image]):focus,
+textarea:focus, select:focus, .form-control:focus {
+	outline: none !important;
+	border-color: var(--wl-accent) !important;
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--wl-accent) 30%, transparent) !important;
+}
+
+/* =====================================================================
+   6. FOOTER
+   ===================================================================== */
+#footer {
+	background: var(--wl-menu-bg) !important;
+	color: var(--wl-text-muted) !important;
+	border-top: 1px solid var(--wl-border) !important;
+}
+#footer a, .footerLink a, #footer .footerLink { color: var(--wl-link) !important; }

@@ -1,0 +1,72 @@
+/* WinterLights skin :: FROST — frosted glass panels over a winter gradient */
+:root {
+	--wl-font:          'Inter', system-ui, sans-serif;
+	--wl-font-brand:    'Oswald', sans-serif;
+
+	--wl-bg:            #1a2740;
+	/* the winter gradient image as a fixed backdrop, tinted darker for contrast */
+	--wl-bg-image:      linear-gradient(180deg, rgba(20,30,55,.55), rgba(40,25,60,.55)),
+	                    url('wlbg.png');
+	--wl-bg-attach:     fixed;
+
+	/* translucent surfaces + blur = the frosted look */
+	--wl-surface:       rgba(255,255,255,.10);
+	--wl-surface-2:     rgba(255,255,255,.16);
+	--wl-surface-blur:  blur(14px) saturate(1.3);
+
+	--wl-border:        rgba(255,255,255,.22);
+	--wl-radius:        18px;
+	--wl-radius-sm:     12px;
+
+	--wl-text:          #f3f7ff;
+	--wl-text-muted:    #c3d0e6;
+	--wl-link:          #bfe3ff;
+
+	--wl-accent:        #7fd8ff;
+	--wl-accent-2:      #c9a9ff;
+	--wl-accent-text:   #0a1626;
+
+	--wl-header-bg:     rgba(255,255,255,.10);
+	--wl-header-text:   #ffffff;
+	--wl-header-h:      80px;
+
+	--wl-menu-bg:       rgba(20,28,48,.45);
+	--wl-menu-text:     #e7eefc;
+	--wl-menu-hover-bg: rgba(255,255,255,.18);
+	--wl-menu-hover-text: #ffffff;
+	--wl-dropdown-bg:   rgba(28,36,58,.94);
+
+	--wl-shadow:        0 16px 50px rgba(0,0,0,.45);
+	--wl-shadow-sm:     0 4px 16px rgba(0,0,0,.30);
+}
+/* glass needs blur on the bars too — but NOT on .dropdown-menu: blurring
+   whatever sits behind an open dropdown (page content, other menu items)
+   makes the menu itself read as a smeared, illegible mess. Menus need to
+   be scanned instantly, unlike decorative header/footer chrome, so keep
+   them out of the blur and rely on --wl-dropdown-bg's near-opaque fill
+   (bumped above) for legibility instead. */
+.header, #fppMenu, #fppMenu.navbar, #footer {
+	-webkit-backdrop-filter: blur(16px) saturate(1.3);
+	backdrop-filter: blur(16px) saturate(1.3);
+}
+/* backdrop-filter forces its element into its own stacking context
+   regardless of z-index — so #fppMenu (and its dropdown children, despite
+   their own z-index:1000) now stack purely by DOM order against later
+   siblings like .pageContent, and lose. Give the navbar's stacking context
+   itself a z-index high enough to paint above page content. */
+#fppMenu, #fppMenu.navbar {
+	position: relative;
+	z-index: 1040;
+}
+/* lift cards off the backdrop with a soft inner highlight */
+fieldset, .fppTable, .card, .tab-pane, #programControl {
+	box-shadow: var(--wl-shadow), inset 0 1px 0 rgba(255,255,255,.18) !important;
+}
+/* Unbacked translucent white over an unpredictable photo background made
+   dropdown/input text (e.g. GPIO's "None/External" select) go invisible
+   wherever the photo happened to be bright at that spot — same class of
+   bug fixed in custom.css. Layer over a guaranteed-opaque backstop. */
+input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=file]):not([type=button]):not([type=submit]):not([type=reset]):not([type=image]),
+select, textarea, .form-control {
+	background: linear-gradient(rgba(255,255,255,.12), rgba(255,255,255,.12)), var(--wl-bg) !important;
+}

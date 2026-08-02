@@ -1,0 +1,49 @@
+/* WinterLights skin :: MINIMAL — clean, neutral, low-distraction, no animation */
+:root {
+	--wl-font:          'Inter', system-ui, sans-serif;
+	--wl-font-brand:    'Inter', sans-serif;
+
+	--wl-bg:            #fbfcfd;
+	--wl-bg-image:      none;
+	--wl-bg-attach:     scroll;
+
+	--wl-surface:       #ffffff;
+	--wl-surface-2:     #f3f5f7;
+	--wl-surface-blur:  none;
+
+	--wl-border:        #e2e6ea;
+	--wl-radius:        10px;
+	--wl-radius-sm:     7px;
+
+	--wl-text:          #1f2937;
+	--wl-text-muted:    #676d7b;
+	--wl-link:          #2f6fd0;
+
+	--wl-accent:        #3b6ea8;     /* restrained slate blue */
+	--wl-accent-2:      #3b6ea8;
+	--wl-accent-text:   #ffffff;
+
+	--wl-header-bg:     #ffffff;
+	--wl-header-text:   #1f2937;
+	--wl-header-h:      66px;
+
+	--wl-menu-bg:       #ffffff;
+	--wl-menu-text:     #374151;
+	--wl-menu-hover-bg: #eef2f6;
+	--wl-menu-hover-text: #111827;
+	--wl-dropdown-bg:   #ffffff;
+
+	--wl-shadow:        0 6px 18px rgba(17,24,39,.08);
+	--wl-shadow-sm:     0 1px 4px rgba(17,24,39,.06);
+}
+/* minimal = flat & calm: kill the animated wordmark + glow accents */
+.wl-brand .wl-wordmark {
+	animation: none !important;
+	background: none !important; -webkit-text-fill-color: var(--wl-text) !important;
+	color: var(--wl-text) !important; font-style: normal; font-weight: 600;
+}
+.header { box-shadow: none !important; border-bottom: 1px solid var(--wl-border) !important; }
+.buttons, .btn-primary {
+	background: var(--wl-accent) !important; box-shadow: none !important;
+}
+.buttons:hover, .btn:hover { transform: none !important; filter: brightness(1.05); }
