@@ -1,0 +1,52 @@
+/* WinterLights skin :: NOIR — true black, high-contrast, string-lights-at-night */
+:root {
+	--wl-font:          'Inter', system-ui, sans-serif;
+	--wl-font-brand:    'Oswald', sans-serif;
+
+	--wl-bg:            #000000;
+	--wl-bg-image:      none;
+	--wl-bg-attach:     scroll;
+
+	--wl-surface:       #121212;
+	--wl-surface-2:     #1c1c1c;
+	--wl-surface-blur:  none;
+
+	--wl-border:        rgba(255,255,255,.12);
+	--wl-radius:        10px;
+	--wl-radius-sm:     6px;
+
+	--wl-text:          #f2f2f2;
+	--wl-text-muted:    #9a9a9a;
+	--wl-link:          #4dd0e1;
+
+	--wl-accent:        #ff453a;     /* string-light red */
+	--wl-accent-2:      #ff9f0a;     /* amber ember */
+	--wl-accent-text:   #000000;
+
+	--wl-header-bg:     #050505;
+	--wl-header-text:   #f2f2f2;
+	--wl-header-h:      70px;
+
+	--wl-menu-bg:       #0a0a0a;
+	--wl-menu-text:     #b0b0b0;
+	--wl-menu-hover-bg: rgba(255,69,58,.15);
+	--wl-menu-hover-text: #ffffff;
+	--wl-dropdown-bg:   #141414;
+
+	--wl-shadow:        0 10px 30px rgba(0,0,0,.6);
+	--wl-shadow-sm:     0 3px 10px rgba(0,0,0,.5);
+}
+/* a single glowing strand along the header bottom edge — restrained, no
+   photo/gradient background to compete with (keeps this skin OLED-cheap).
+   No .header{position:relative} here on purpose — that override broke
+   native FPP's fixed-header layout at desktop widths earlier this
+   session (see custom.css's HEADER section comment). .header is always
+   at least position:fixed (desktop) or gets position:relative inlined by
+   custom.js's injectBrand() when genuinely static, so ::after already has
+   a positioning context to anchor to without us forcing one here. */
+.header::after {
+	content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+	background: linear-gradient(90deg, transparent, var(--wl-accent), var(--wl-accent-2), transparent);
+	opacity: .7;
+	pointer-events: none;
+}

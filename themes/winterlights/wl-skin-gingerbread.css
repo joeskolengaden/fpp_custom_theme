@@ -1,0 +1,51 @@
+/* WinterLights skin :: GINGERBREAD — warm cream & cinnamon, cozy light theme */
+:root {
+	--wl-font:          'Inter', system-ui, sans-serif;
+	--wl-font-brand:    'Oswald', sans-serif;
+
+	--wl-bg:            #fdf6ec;
+	--wl-bg-image:      linear-gradient(180deg, rgba(230,180,120,.15), rgba(200,90,60,.10));
+	--wl-bg-attach:     fixed;
+
+	--wl-surface:       #ffffff;
+	--wl-surface-2:     #fbeee0;
+	--wl-surface-blur:  none;
+
+	--wl-border:        rgba(120,70,30,.18);
+	--wl-radius:        14px;
+	--wl-radius-sm:     9px;
+
+	--wl-text:          #3a2416;
+	--wl-text-muted:    #6f5540;     /* darker than the initial draft (#8a6a52 measured 4.59:1, too tight a margin) */
+	--wl-link:          #9c3f22;     /* darker than a first draft (#b5502e failed against --wl-menu-bg below, which custom.css also uses for the footer link) */
+
+	--wl-accent:        #c0392b;     /* cinnamon / holly berry red */
+	--wl-accent-2:      #6b3f1d;     /* gingerbread brown */
+	--wl-accent-text:   #ffffff;
+
+	--wl-header-bg:     linear-gradient(120deg, #6b3f1d, #8a4a1f);
+	--wl-header-text:   #fff3e0;
+	--wl-header-h:      76px;
+
+	/* Kept in the same light family as --wl-bg on purpose. custom.css
+	   reuses --wl-text-muted/--wl-link for the footer (which sits on
+	   --wl-menu-bg) and --wl-menu-text for dropdown items (which sit on
+	   the separate --wl-dropdown-bg) — a dark menu-bg here, unlike every
+	   other skin, broke all three: light-on-light dropdown text, and
+	   dark-on-dark footer text/link. The header stays dark brown safely,
+	   since --wl-header-bg/--wl-header-text are self-contained and don't
+	   leak into any other variable. */
+	--wl-menu-bg:       #f3e2c8;
+	--wl-menu-text:     #4a2c14;
+	--wl-menu-hover-bg: rgba(192,57,43,.14);
+	--wl-menu-hover-text: #7a1f16;
+	--wl-dropdown-bg:   #ffffff;
+
+	--wl-shadow:        0 14px 36px rgba(90,50,20,.20);
+	--wl-shadow-sm:     0 3px 10px rgba(90,50,20,.14);
+}
+/* icing-style dotted top border on cards — a small, low-risk signature
+   touch (no position/blur/translucency tricks) */
+fieldset, .fppTable, .card {
+	border-top: 3px dotted var(--wl-accent-2) !important;
+}
