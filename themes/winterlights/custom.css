@@ -135,8 +135,17 @@ pre, code, textarea, .console {
 	   fight native's fixed positioning at desktop widths, only fill in a
 	   positioning context where native genuinely leaves one (or lacks one). */
 }
-.header a, .header .headerHostName, .header .headerName,
-.header #header_host, .header .versionHead {
+/* Broadened from a whitelist of specific classes (.headerHostName,
+   #header_host, .versionHead, etc.) to every descendant of .header.
+   FPP core hardcodes color on several header sub-elements we hadn't
+   individually found/enumerated (e.g. #header_host a{color:#fff},
+   body .headerCenter a{color:rgba(255,255,255,.75)}) — invisible on
+   light-header skins like Minimal, since white text landing on white
+   text landing on white was the actual bug, not something the narrower
+   selector list was ever going to fully catch by listing classes one at
+   a time. This is a blanket rule specifically so it doesn't matter which
+   FPP version/class is used for any given piece of header content. */
+.header, .header * {
 	color: var(--wl-header-text) !important;
 }
 /* The WinterLights brand block (.wl-brand) injected into the header, and
