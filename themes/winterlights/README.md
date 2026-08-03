@@ -31,10 +31,22 @@ FPP auto-loads `custom.css`/`custom.js`; the rest load themselves.
 
 ## Adding a new skin
 
-Drop in a `wl-skin-<id>.css` file using the same `--wl-*` variable
-convention and the `/* WinterLights skin :: NAME — description */` header
-comment format the existing skins use. `custom.js` discovers it via FPP's
-`GET /api/configfile` listing endpoint and adds it to the picker
-automatically on the next page load — no changes to `custom.js` needed.
+**Start from `THEME-TEMPLATE.css`** — copy it to `wl-skin-<id>.css` and fill
+in the `--wl-*` values. It documents every variable and bakes in the
+gotchas this pack's own skins hit during development (e.g. keeping
+`--wl-menu-bg` in the same light/dark family as `--wl-bg`, the header
+wordmark's gradient being independent of `--wl-header-text`, never setting
+`position:relative` on `.header`). Follow the `/* WinterLights skin ::
+NAME — description */` header comment format — `custom.js` discovers any
+`wl-skin-<id>.css` via FPP's `GET /api/configfile` listing endpoint and
+adds it to the picker automatically on the next page load, no changes to
+`custom.js` needed. (`THEME-TEMPLATE.css` is intentionally NOT named
+`wl-skin-*.css`, so it never gets auto-discovered as a real, selectable
+skin itself.)
+
+Before shipping a new skin, check every text/background pairing against
+WCAG AA (4.5:1 body text, 3:1 large/UI text) with real computed contrast
+values — several first drafts in this pack measured well under 4.5:1 on
+the first try.
 
 Targets FPP 5.4 → 9.x.

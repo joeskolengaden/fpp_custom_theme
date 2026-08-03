@@ -252,25 +252,43 @@ html[data-bs-theme="light"] .header .fpp-logo {
 	border-color: var(--wl-border) !important;
 }
 
-/* GLOBAL fix for a recurring bug pattern: FPP core hardcodes text color
-   on individual generic wrapper elements throughout its pages (.title,
+/* TRUE global fix for a recurring bug pattern: FPP core hardcodes text
+   color on individual elements throughout its pages (.title,
    .statusDivTopRow, .fileManagerDivData, .playlistEntriesBody,
    .tblPlaylistWrap, .labelValue, and others found only by hitting them
    one page at a time), always assuming FPP's own native dark theme.
-   Rather than keep whitelisting specific classes as each one turns up
-   invisible on a light skin, force every GENERIC wrapper tag inside
-   .mainContainer/.pageContent (which is virtually all real page content)
-   to the theme's text color. Deliberately scoped by TAG, not a universal
-   selector: a, buttons/input, and legend are different tags, so this
-   can't fight the more-specific rules that already color those
-   correctly (links, button text, the accent-colored legend) — a true
-   `.pageContent *` would tie or lose against those on specificity and
-   risk silently breaking them, unverifiable without a live browser. */
-.mainContainer, .mainContainer h1, .mainContainer h2, .mainContainer h3,
-.mainContainer h4, .mainContainer h5, .mainContainer h6,
-.mainContainer p, .mainContainer div, .mainContainer span,
-.mainContainer small, .mainContainer label, .mainContainer li,
-.mainContainer td, .mainContainer th {
+   Rather than keep whitelisting specific classes OR specific tags as
+   each one turns up invisible on a light skin, this is a genuine
+   universal selector (*) inside .mainContainer (which is virtually all
+   real page content — header/footer/menu/dropdown/picker are separate
+   containers with their own correctly-different --wl-header-text/
+   --wl-menu-text variables, deliberately NOT touched here).
+
+   The :not(...) exclusions are load-bearing, not decoration: per the
+   CSS spec, :not(X) contributes X's OWN specificity to the compound
+   selector, so `*:not(a)` HAS THE SPECIFICITY OF `a` for element a —
+   meaning excluded tags don't just lose a specificity fight, they don't
+   match this rule AT ALL, so their own dedicated color rules (link
+   color, button text, the accent-colored legend) are never in
+   contention here in the first place. That's a structural guarantee,
+   not a "should currently win" specificity calculation that a future
+   change could quietly break.
+
+   Residual, accepted risk: a semantic color living directly on a bare
+   div/span with only a single class (e.g. Bootstrap's .spinner-danger)
+   can still get muted to plain text color, since :not() only excludes
+   by TAG, not by class. That's a minor cosmetic case, not an
+   invisible-text bug — add a more specific override if you hit one
+   (see the TEMPLATE file for the pattern). */
+.mainContainer,
+.mainContainer *:not(a):not(button):not(input):not(select):not(textarea):not(legend) {
+	color: var(--wl-text) !important;
+}
+/* Same guarantee for modal dialogs — a separate top-level container
+   (Bootstrap appends .modal-content outside .mainContainer), so the
+   rule above never reaches it on its own. */
+.modal-content,
+.modal-content *:not(a):not(button):not(input):not(select):not(textarea):not(legend) {
 	color: var(--wl-text) !important;
 }
 

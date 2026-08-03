@@ -1,0 +1,149 @@
+/* WinterLights skin :: TEMPLATE — copy this file to make a new skin
+   ================================================================
+   1. Save as wl-skin-<id>.css, e.g. wl-skin-ocean.css -> id "ocean".
+   2. Fill in every --wl-* value below (placeholders marked TODO).
+   3. Rewrite the very first line of the file (the comment this
+      paragraph is part of) to just: WinterLights skin :: NAME, then a
+      dash, then a one-line description. custom.js parses that exact
+      "WinterLights skin :: " + dash + description format to auto-fill
+      the picker's name/description for you. No other file needs
+      editing — upload this file through the plugin's Content Setup
+      page and it appears in the picker on the next page load.
+   4. Run every pairing below through a contrast checker (4.5:1 for
+      body text, 3:1 for large/UI text — WCAG AA) BEFORE shipping. Do
+      this with real computed values, not by eye — several skins this
+      session shipped a first draft that measured well under 4.5:1.
+   ================================================================ */
+:root {
+	/* --- Typography ----------------------------------------------- */
+	--wl-font:          'Inter', system-ui, sans-serif;      /* TODO: body font stack */
+	--wl-font-brand:    'Oswald', sans-serif;                /* TODO: header/wordmark/legend font */
+
+	/* --- Page background -------------------------------------------
+	   LESSON: keep --wl-bg in the same light/dark FAMILY as
+	   --wl-menu-bg below. custom.css reuses --wl-text-muted / --wl-link
+	   (tuned for --wl-bg) on the FOOTER, which sits on --wl-menu-bg —
+	   and --wl-menu-text (tuned for --wl-menu-bg) on DROPDOWN items,
+	   which sit on the separate --wl-dropdown-bg. Mixing a light page
+	   with a dark navbar (or vice versa) breaks one of those three
+	   pairings even though each variable looks fine in isolation — this
+	   broke Gingerbread's first draft (dark navbar, light page) with
+	   invisible footer text and invisible dropdown items. Every skin
+	   in this pack keeps --wl-bg / --wl-menu-bg / --wl-dropdown-bg in
+	   one family; only --wl-header-bg is safe to make different, since
+	   --wl-header-text is self-contained and never shared with another
+	   context. */
+	--wl-bg:            #TODO;                                /* solid hex, e.g. #161d20 */
+	--wl-bg-image:      none;                                 /* TODO: none, or a gradient/url(). See TRANSLUCENCY note below if you use one */
+	--wl-bg-attach:     scroll;                               /* TODO: scroll, or fixed if --wl-bg-image is set */
+
+	/* --- Surfaces (cards, tables, fieldsets) -------------------------
+	   TRANSLUCENCY WARNING: if you want a "frosted glass" look and set
+	   these to an rgba() with alpha < 1, custom.css already backs every
+	   surface with a solid var(--wl-bg) fallback via layered
+	   backgrounds (linear-gradient(surface,surface), var(--wl-bg)) —
+	   NOT backdrop-filter. Frost's first draft used real backdrop-filter
+	   blur, which is unreliable on <table>/<th> elements across
+	   browsers and left contrast depending on live photo content behind
+	   it. If you add your OWN backdrop-filter for extra polish (fine
+	   for div-based elements like .header/#fppMenu/#footer), never rely
+	   on it for legibility on anything table-based — the layered
+	   fallback custom.css already provides is what actually guarantees
+	   contrast, not the blur. */
+	--wl-surface:       #TODO;                                /* e.g. #1f292d — cards, fieldsets, .fppTable */
+	--wl-surface-2:     #TODO;                                /* e.g. #263238 — table headers, chips, disabled inputs */
+	--wl-surface-blur:  none;                                 /* backdrop-filter value; leave "none" unless you understand the warning above */
+
+	--wl-border:        rgba(255,255,255,.10);                /* TODO: usually a low-alpha version of your text color */
+	--wl-radius:        12px;                                 /* TODO: card corner radius */
+	--wl-radius-sm:     8px;                                  /* TODO: button/input/chip corner radius */
+
+	/* --- Body text ---------------------------------------------------
+	   --wl-text and --wl-text-muted are used almost everywhere via
+	   custom.css's global .mainContainer/.modal-content rule — pick
+	   values with strong contrast against BOTH --wl-bg and --wl-surface/
+	   --wl-surface-2, since text lands on all three. */
+	--wl-text:          #TODO;                                /* body/card text — needs >=4.5:1 on --wl-bg AND --wl-surface */
+	--wl-text-muted:    #TODO;                                /* secondary text, footer, picker descriptions — same >=4.5:1 requirement */
+	--wl-link:          #TODO;                                /* needs >=4.5:1 on --wl-bg AND on --wl-menu-bg (footer links use this too) */
+
+	/* --- Accent (buttons, legend, active tab, wordmark) --------------
+	   accent/accent-2 form a gradient in most places (buttons, the
+	   header wordmark, the picker toggle). Set both to the SAME value
+	   for a flat, non-gradient look (see Minimal). */
+	--wl-accent:        #TODO;
+	--wl-accent-2:      #TODO;
+	--wl-accent-text:   #TODO;                                /* button label color — needs >=3:1 on BOTH --wl-accent and --wl-accent-2 */
+
+	/* --- Header --------------------------------------------------
+	   Self-contained: --wl-header-bg/--wl-header-text are never reused
+	   elsewhere, so they're safe to differ from the rest of the page
+	   (e.g. a dark header on an otherwise light skin, like
+	   Gingerbread). If --wl-header-bg is a gradient/image, check
+	   --wl-header-text against EVERY stop, not just one. Also check the
+	   HEADER WORDMARK below — its default gradient is NOT
+	   --wl-header-text, it's --wl-accent -> --wl-accent-2, which can
+	   independently clash with a header color even when
+	   --wl-header-text itself is fine (this broke Gingerbread: its
+	   --wl-accent-2 was the exact same color as one of its own header
+	   gradient stops, making the wordmark invisible at that end — fixed
+	   with a per-skin wordmark override, see the bottom of this file). */
+	--wl-header-bg:     #TODO;                                /* solid, gradient, or url()+gradient fallback */
+	--wl-header-text:   #TODO;                                /* needs >=4.5:1 on every --wl-header-bg stop/region */
+	--wl-header-h:      72px;                                 /* TODO: header height */
+
+	/* --- Navbar / dropdown --------------------------------------------
+	   Keep --wl-menu-bg in the same family as --wl-bg (see the LESSON
+	   above). --wl-dropdown-bg should ALSO stay in that family, since
+	   --wl-menu-text (tuned for --wl-menu-bg) is reused for dropdown
+	   item text — a light --wl-dropdown-bg with a dark-tuned
+	   --wl-menu-text is the same class of bug. */
+	--wl-menu-bg:       #TODO;
+	--wl-menu-text:     #TODO;                                /* needs >=4.5:1 on --wl-menu-bg AND --wl-dropdown-bg */
+	--wl-menu-hover-bg: rgba(0,0,0,0);                        /* TODO: usually your accent color at low alpha */
+	--wl-menu-hover-text: #TODO;
+	--wl-dropdown-bg:   #TODO;                                /* keep near-opaque (alpha >= .9) if translucent — a 75% dropdown over a busy background was reported as looking "smeared/covered" earlier this session */
+
+	--wl-shadow:        0 8px 28px rgba(0,0,0,.35);           /* TODO: drop shadow for menus/modals */
+	--wl-shadow-sm:     0 2px 8px rgba(0,0,0,.25);            /* TODO: drop shadow for cards/buttons */
+}
+
+/* =====================================================================
+   OPTIONAL: per-skin overrides
+   Everything below is optional flourish, not required for a working
+   skin. Keep additions small and self-contained — every extra rule is
+   one more thing that can clash with something you haven't tested.
+   ===================================================================== */
+
+/* Only add this if the DEFAULT wordmark gradient (--wl-accent ->
+   --wl-accent-2, rendered directly on --wl-header-bg) turns out
+   low-contrast against your header — check it explicitly, don't guess.
+   See wl-skin-gingerbread.css for a real example: it needed different
+   colors here than its own --wl-accent/--wl-accent-2 because those
+   happened to collide with --wl-header-bg. */
+/*
+.wl-brand .wl-wordmark {
+	background: linear-gradient(90deg, #TODO, #TODO);
+	-webkit-background-clip: text;
+	background-clip: text;
+}
+*/
+
+/* GOTCHA: never set position:relative on .header. Native FPP makes
+   .header position:fixed at desktop widths and compensates with
+   #bodyWrapper{margin-top:64px} — overriding that to relative pulls the
+   header out of the fixed layer but leaves the 64px margin in place,
+   opening a blank gap above the header. custom.js's injectBrand()
+   already sets position:relative inline, but ONLY when the header's
+   computed position is genuinely static, so it won't fight native's
+   fixed positioning. If you need a positioning context for a header
+   flourish (e.g. an ::after underline like Midnight/Noir use), it
+   already has one — you don't need to add your own. */
+
+/* If you spot a semantic color (e.g. a status indicator) that custom.css's
+   global .mainContainer rule muted to plain text color — see the
+   RESIDUAL RISK note in custom.css near that rule — override it back
+   here with a selector specific enough to win, e.g.: */
+/*
+.mainContainer .spinner-danger { color: #f63939 !important; }
+*/
