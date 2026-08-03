@@ -1,0 +1,40 @@
+/* WinterLights skin :: EVERGREEN — dark forest green with warm gold accents */
+:root {
+	--wl-font:          'Inter', system-ui, sans-serif;
+	--wl-font-brand:    'Oswald', sans-serif;
+
+	--wl-bg:            #0f1a13;
+	--wl-bg-image:      none;
+	--wl-bg-attach:     scroll;
+
+	--wl-surface:       #16241b;
+	--wl-surface-2:     #1e3025;
+	--wl-surface-blur:  none;
+
+	--wl-border:        rgba(180,200,170,.14);
+	--wl-radius:        12px;
+	--wl-radius-sm:     8px;
+
+	--wl-text:          #eef3ea;
+	--wl-text-muted:    #9fb3a0;
+	--wl-link:          #7dd3a8;
+
+	--wl-accent:        #d4a537;     /* gold / autumn amber */
+	--wl-accent-2:      #94b878;     /* lightened from an initial #7a9b5e, which measured
+	                                     4.19:1 against the header's own light gradient stop —
+	                                     too tight a margin for the wordmark text */
+	--wl-accent-text:   #1a1408;
+
+	--wl-header-bg:     linear-gradient(120deg, #14261a 0%, #1f3524 100%);
+	--wl-header-text:   #eef7ee;
+	--wl-header-h:      72px;
+
+	--wl-menu-bg:       #0c1610;
+	--wl-menu-text:     #b7c9ba;
+	--wl-menu-hover-bg: rgba(212,165,55,.15);
+	--wl-menu-hover-text: #ffffff;
+	--wl-dropdown-bg:   #17251b;
+
+	--wl-shadow:        0 12px 36px rgba(0,0,0,.5);
+	--wl-shadow-sm:     0 2px 10px rgba(0,0,0,.4);
+}

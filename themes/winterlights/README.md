@@ -1,9 +1,9 @@
 # WinterLights.in theme pack
 
-A drop-in theme for this plugin: 7 switchable skins (Midnight, Festive,
-Minimal, Frost, Noir, Gingerbread, and Default — FPP's own native look,
-unmodified) with a floating picker widget, all driven by CSS custom
-properties.
+A drop-in theme for this plugin: 10 switchable skins (Midnight, Festive,
+Minimal, Frost, Noir, Gingerbread, Aurora, Evergreen, Cotton Candy, and
+Default — FPP's own native look, unmodified) with a floating picker widget,
+all driven by CSS custom properties.
 
 ## Files
 
@@ -16,12 +16,15 @@ properties.
   uploaded later without needing further edits.
 - `wl-picker.css` — always-on styling for the brand block + picker widget,
   loaded regardless of which skin (including Default) is active.
+- `THEME-TEMPLATE.css` — starting point for building a new skin; see
+  "Adding a new skin" below.
 - `wl-skin-midnight.css`, `wl-skin-festive.css`, `wl-skin-minimal.css`,
   `wl-skin-frost.css`, `wl-skin-noir.css`, `wl-skin-gingerbread.css`,
-  `wl-skin-default.css` — the individual skins. Noir and Gingerbread are
-  only in `custom.js`'s auto-discovery, not its hardcoded fallback list —
-  they'll appear in the picker once `custom.js` has fetched the config
-  file listing, a live test of that discovery path.
+  `wl-skin-aurora.css`, `wl-skin-evergreen.css`, `wl-skin-cotton-candy.css`,
+  `wl-skin-default.css` — the individual skins. Only Midnight, Festive,
+  Minimal, Frost, and Default are in `custom.js`'s hardcoded fallback
+  list — the rest are picked up purely via its auto-discovery, appearing
+  in the picker once `custom.js` has fetched the config file listing.
 
 ## Install
 

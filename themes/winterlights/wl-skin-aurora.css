@@ -1,0 +1,46 @@
+/* WinterLights skin :: AURORA — deep space navy, northern-lights green & violet */
+:root {
+	--wl-font:          'Inter', system-ui, sans-serif;
+	--wl-font-brand:    'Oswald', sans-serif;
+
+	--wl-bg:            #0a0e17;
+	--wl-bg-image:      radial-gradient(1000px 500px at 15% -10%, rgba(52,211,153,.12), transparent 60%),
+	                    radial-gradient(900px 500px at 90% 105%, rgba(167,139,250,.12), transparent 60%);
+	--wl-bg-attach:     fixed;
+
+	--wl-surface:       #131a26;
+	--wl-surface-2:     #1c2536;
+	--wl-surface-blur:  none;
+
+	--wl-border:        rgba(150,220,200,.14);
+	--wl-radius:        12px;
+	--wl-radius-sm:     8px;
+
+	--wl-text:          #e8f4f0;
+	--wl-text-muted:    #8fa3a8;
+	--wl-link:          #5eead4;
+
+	--wl-accent:        #34d399;     /* aurora green */
+	--wl-accent-2:      #a78bfa;     /* aurora violet */
+	--wl-accent-text:   #04120c;
+
+	--wl-header-bg:     linear-gradient(120deg, #0f1c1a 0%, #1a1030 100%);
+	--wl-header-text:   #eafff5;
+	--wl-header-h:      72px;
+
+	--wl-menu-bg:       #0d1420;
+	--wl-menu-text:     #b8c9cc;
+	--wl-menu-hover-bg: rgba(52,211,153,.15);
+	--wl-menu-hover-text: #ffffff;
+	--wl-dropdown-bg:   #141c2c;
+
+	--wl-shadow:        0 12px 36px rgba(0,0,0,.5);
+	--wl-shadow-sm:     0 2px 10px rgba(0,0,0,.4);
+}
+/* faint glowing top edge, echoing the aurora glow in the page background */
+.header::after {
+	content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+	background: linear-gradient(90deg, transparent, var(--wl-accent), var(--wl-accent-2), transparent);
+	opacity: .8;
+	pointer-events: none;
+}
