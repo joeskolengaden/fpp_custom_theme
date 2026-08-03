@@ -252,21 +252,27 @@ html[data-bs-theme="light"] .header .fpp-logo {
 	border-color: var(--wl-border) !important;
 }
 
-/* FPP core hardcodes .title (the h1.title plugin/page heading) to a fixed
-   white (fpp.css: .title{color:#fff}), which reads fine on our dark skins
-   only by coincidence and goes invisible on light skins (Festive, Minimal). */
-.title, .mainContainer .title, h1.title { color: var(--wl-text) !important; }
-
-/* Individual plugins (including this theme's own config page) often
-   hardcode their own heading/label colors, tuned only against FPP core's
-   fixed white .pageContent. Once .pageContent follows the skin above,
-   those hardcoded colors can end up low-contrast on some skins — so pull
-   any un-classed heading/paragraph text inside plugin content back to the
-   theme's text color as a safety net. Buttons, links, and anything we
-   deliberately accent elsewhere keep their own more-specific rules. */
-.pageContent h1, .pageContent h2, .pageContent h3,
-.pageContent h4, .pageContent h5, .pageContent h6,
-.pageContent p { color: var(--wl-text) !important; }
+/* GLOBAL fix for a recurring bug pattern: FPP core hardcodes text color
+   on individual generic wrapper elements throughout its pages (.title,
+   .statusDivTopRow, .fileManagerDivData, .playlistEntriesBody,
+   .tblPlaylistWrap, .labelValue, and others found only by hitting them
+   one page at a time), always assuming FPP's own native dark theme.
+   Rather than keep whitelisting specific classes as each one turns up
+   invisible on a light skin, force every GENERIC wrapper tag inside
+   .mainContainer/.pageContent (which is virtually all real page content)
+   to the theme's text color. Deliberately scoped by TAG, not a universal
+   selector: a, buttons/input, and legend are different tags, so this
+   can't fight the more-specific rules that already color those
+   correctly (links, button text, the accent-colored legend) — a true
+   `.pageContent *` would tie or lose against those on specificity and
+   risk silently breaking them, unverifiable without a live browser. */
+.mainContainer, .mainContainer h1, .mainContainer h2, .mainContainer h3,
+.mainContainer h4, .mainContainer h5, .mainContainer h6,
+.mainContainer p, .mainContainer div, .mainContainer span,
+.mainContainer small, .mainContainer label, .mainContainer li,
+.mainContainer td, .mainContainer th {
+	color: var(--wl-text) !important;
+}
 
 /* .fppTable/.printControlTable are literal <table> elements in several FPP
    pages, and backdrop-filter is unreliable on table-layout elements (see
@@ -360,6 +366,19 @@ tr:nth-child(even) > td { background: rgba(127,127,127,.05); }
    Midnight/Noir/Frost (light text on #ECECEC), fine on Minimal (dark
    text already worked by coincidence). */
 .fileManagerDivData {
+	background: linear-gradient(var(--wl-surface-2), var(--wl-surface-2)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+}
+
+/* Same pattern found by grepping fpp.css for every hardcoded
+   background-color:#ECECEC/#f5f5f5 in one pass, rather than waiting to
+   hit each on a different page: the Playlists editor's entry rows/wrap,
+   the player-time/playlist-header value chips, and tablesorter's own
+   header cells (a different selector from our existing thead th rule,
+   used when a table has tablesorter attached to it). */
+.playlistEntriesBody, .tblPlaylistWrap,
+#playerTime .labelValue, .tblPlaylistHeaderDetails .labelValue,
+.tablesorter thead td, .tablesorter thead th {
 	background: linear-gradient(var(--wl-surface-2), var(--wl-surface-2)), var(--wl-bg) !important;
 	color: var(--wl-text) !important;
 }
