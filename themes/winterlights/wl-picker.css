@@ -88,6 +88,19 @@ body:has(.ui-dialog:not([style*="display: none"])) #wlSkinPicker { display: none
 	color: var(--wl-text);
 	transform-origin: bottom right;
 	transition: opacity .18s ease, transform .18s ease;
+	/* The pack has grown past the ~5 skins this panel was originally
+	   sized for (10 now, and growing) with no cap on its own height —
+	   past a certain skin count it just ran off the top of the
+	   viewport with no way to reach the rest. Cap the whole panel and
+	   let only the option list scroll, keeping the "Theme Skin" title
+	   and the footer link always visible. */
+	max-height: calc(100vh - 110px);
+	display: flex;
+	flex-direction: column;
+}
+#wlSkinOptions {
+	overflow-y: auto;
+	min-height: 0; /* required for a flex child to actually shrink/scroll instead of forcing the panel to grow */
 }
 #wlSkinPanel[hidden] { display: none; }
 #wlSkinPanel.wl-closing { opacity: 0; transform: scale(.92); }
