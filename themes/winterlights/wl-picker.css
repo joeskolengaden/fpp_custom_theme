@@ -68,7 +68,13 @@ body:has(.modal.show) #wlSkinPicker,
 body:has(dialog[open]) #wlSkinPicker,
 body:has(.ui-dialog:not([style*="display: none"])) #wlSkinPicker { display: none !important; }
 #wlSkinToggle {
-	position: fixed; right: 20px; bottom: 20px; z-index: 1030;
+	/* z-index bumped from 1030 -> 1045: Frost's own #fppMenu needs
+	   z-index:1040 (see wl-skin-frost.css) to paint above page content —
+	   picker chrome should always sit above the navbar regardless of
+	   what any current or future skin needs there, so this stays ahead
+	   of it with room to spare, while staying below Bootstrap's own
+	   modals (z-index:1055, see the modal-open guard above). */
+	position: fixed; right: 20px; bottom: 20px; z-index: 1045;
 	width: 52px; height: 52px; border-radius: 50%;
 	border: none; cursor: pointer;
 	background: linear-gradient(135deg, var(--wl-accent), var(--wl-accent-2));
@@ -78,7 +84,7 @@ body:has(.ui-dialog:not([style*="display: none"])) #wlSkinPicker { display: none
 }
 #wlSkinToggle:hover { transform: scale(1.08) rotate(8deg); box-shadow: 0 10px 28px rgba(0,0,0,.5); }
 #wlSkinPanel {
-	position: fixed; right: 20px; bottom: 84px; z-index: 1031;
+	position: fixed; right: 20px; bottom: 84px; z-index: 1046; /* one above #wlSkinToggle, same reasoning */
 	width: 260px; padding: 14px;
 	background: var(--wl-dropdown-bg);
 	border: 1px solid var(--wl-border);
