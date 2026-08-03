@@ -352,6 +352,18 @@ tr:nth-child(even) > td { background: rgba(127,127,127,.05); }
 	color: var(--wl-text) !important;
 }
 
+/* Same hardcoded-light-gray pattern on the File Manager page
+   (.fileManagerDivData{background-color:#ECECEC}, no !important, no
+   text color) — a *different* class from .backdrop above (it's a child
+   div INSIDE .backdrop with its own separate hardcoded background), so
+   the existing .backdrop fix never reached it. Confirmed washed out on
+   Midnight/Noir/Frost (light text on #ECECEC), fine on Minimal (dark
+   text already worked by coincidence). */
+.fileManagerDivData {
+	background: linear-gradient(var(--wl-surface-2), var(--wl-surface-2)), var(--wl-bg) !important;
+	color: var(--wl-text) !important;
+}
+
 /* FPP core's compiled fpp-bootstrap.css hardcodes these "chip" backgrounds
    (.backdrop-dark:#ECECEC, .backdrop:#F5F5F5) used for the Enable/Cape-type
    row on Channel Outputs and similar option bars. They're never themed, so
